@@ -1,13 +1,13 @@
 import React from 'react'
-import { DrawerDemo } from './Drawer'
+import Workload from './shared-component/Workload/WorkloadHome'
 
 const App = () => {
   return (
     <div>
-      <h1 class="text-3xl font-bold underline text-red-500">
+      {/* <h1 class="text-3xl font-bold underline text-red-500">
         Hello world!
-      </h1>
-      <DrawerDemo/>
+      </h1> */}
+      <Workload />
     </div>
   )
 }
