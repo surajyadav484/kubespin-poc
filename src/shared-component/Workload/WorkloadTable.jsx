@@ -1,9 +1,8 @@
-import * as React from "react"
+import React, { useState } from "react"
 import {
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
   useReactTable
 } from "@tanstack/react-table"
@@ -32,34 +31,56 @@ import {
 
 const data = [
   {
-    id: "m5gr84i9",
-    amount: 316,
-    status: "success",
-    email: "ken99@example.com"
+    "workload": "Production",
+    "type": "Microservices",
+    "namespace": "default",
+    "pods": 10,
+    "avg_req_per_hour": {
+      "cpu": "500m",
+      "memory": "256Mi",
+      "storage": "10Gi"
+    },
+    "total_cost": "$170",
+    "change": "+10%"
   },
   {
-    id: "3u1reuv4",
-    amount: 242,
-    status: "success",
-    email: "Abe45@example.com"
+    "workload": "Staging",
+    "type": "Batch Job",
+    "namespace": "staging-ns",
+    "pods": 5,
+    "avg_req_per_hour": {
+      "cpu": "250m",
+      "memory": "128Mi",
+      "storage": "5Gi"
+    },
+    "total_cost": "$75",
+    "change": "-5%"
   },
   {
-    id: "derv1ws0",
-    amount: 837,
-    status: "processing",
-    email: "Monserrat44@example.com"
+    "workload": "Development",
+    "type": "Web App",
+    "namespace": "dev-ns",
+    "pods": 8,
+    "avg_req_per_hour": {
+      "cpu": "400m",
+      "memory": "200Mi",
+      "storage": "8Gi"
+    },
+    "total_cost": "$136",
+    "change": "+2%"
   },
   {
-    id: "5kma53ae",
-    amount: 874,
-    status: "success",
-    email: "Silas22@example.com"
-  },
-  {
-    id: "bhqecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@example.com"
+    "workload": "QA",
+    "type": "Database",
+    "namespace": "qa-ns",
+    "pods": 3,
+    "avg_req_per_hour": {
+      "cpu": "300m",
+      "memory": "512Mi",
+      "storage": "15Gi"
+    },
+    "total_cost": "$150",
+    "change": "0%"
   }
 ]
 
@@ -87,78 +108,141 @@ export const columns = [
     enableHiding: false
   },
   {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: "workload",
+    header:
+      ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Workload
+            <ArrowUpDown />
+          </Button>
+        )
+      },
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("status")}</div>
+      <div className="capitalize">{row.getValue("workload")}</div>
     )
   },
   {
-    accessorKey: "email",
+    accessorKey: "type",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Email
+          Type
           <ArrowUpDown />
         </Button>
       )
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>
+    cell: ({ row }) => <div className="lowercase">{row.getValue("type")}</div>
   },
   {
-    accessorKey: "amount",
-    header: () => <div className="text-right">Amount</div>,
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"))
-
-      // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD"
-      }).format(amount)
-
-      return <div className="text-right font-medium">{formatted}</div>
-    }
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const payment = row.original
-
+    accessorKey: "pods",
+    header: ({ column }) => {
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
-            >
-              Copy payment ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Pods
+          <ArrowUpDown />
+        </Button>
       )
-    }
+    },
+    cell: ({ row }) => <div className="lowercase">{row.getValue("pods")}</div>
+  },
+  {
+    header: "Avg Req per Hour",
+    columns: [
+      {
+        accessorKey: "cpu",
+        header: ({ column }) => {
+          return (
+            <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            >
+              CPU
+              <ArrowUpDown />
+            </Button>
+          )
+        },
+        cell: ({ row }) =>{row.getValue("cpu")},
+      },
+      {
+        accessorKey: "memory",
+        header: ({ column }) => {
+          return (
+            <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            >
+              Memory
+              <ArrowUpDown />
+            </Button>
+          )
+        },
+        cell: ({ row }) =>{row.getValue("memory")},
+      },
+      {
+        accessorKey: "storage",
+        header: ({ column }) => {
+          return (
+            <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            >
+              Storage
+              <ArrowUpDown />
+            </Button>
+          )
+        },
+        cell: ({ row }) => {row.getValue("storage")},
+      }
+    ]
+  },
+  {
+    accessorKey: "total_cost",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Total Cost
+          <ArrowUpDown />
+        </Button>
+      )
+    },
+    cell: ({ row }) => <div className="lowercase">{row.getValue("total_cost")}</div>
+  },
+  {
+    accessorKey: "change",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Change
+          <ArrowUpDown />
+        </Button>
+      )
+    },
+    cell: ({ row }) => <div className="lowercase">{row.getValue("change")}</div>
   }
 ]
 
 export default function WorkloadTable() {
-  const [sorting, setSorting] = React.useState([])
-  const [columnFilters, setColumnFilters] = React.useState([])
-  const [columnVisibility, setColumnVisibility] = React.useState({})
-  const [rowSelection, setRowSelection] = React.useState({})
+  const [sorting, setSorting] = useState([])
+  const [columnFilters, setColumnFilters] = useState([])
+  const [columnVisibility, setColumnVisibility] = useState({})
+  const [rowSelection, setRowSelection] = useState({})
+  const [grouping, setGrouping] = useState([])
 
   const table = useReactTable({
     data,
@@ -166,16 +250,17 @@ export default function WorkloadTable() {
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    onGroupingChange: setGrouping,
     state: {
       sorting,
       columnFilters,
       columnVisibility,
-      rowSelection
+      rowSelection,
+      grouping
     }
   })
 
@@ -183,10 +268,10 @@ export default function WorkloadTable() {
     <div className="w-full">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter emails..."
-          value={table.getColumn("email")?.getFilterValue() ?? ""}
+          placeholder="Filter workloads..."
+          value={table.getColumn("workload")?.getFilterValue() ?? ""}
           onChange={event =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
+            table.getColumn("workload")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
@@ -208,7 +293,7 @@ export default function WorkloadTable() {
                     checked={column.getIsVisible()}
                     onCheckedChange={value => column.toggleVisibility(!!value)}
                   >
-                    {column.id}
+                    {column.id.replace(/_/g, " ")}
                   </DropdownMenuCheckboxItem>
                 )
               })}
@@ -226,9 +311,9 @@ export default function WorkloadTable() {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   )
                 })}
