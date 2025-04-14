@@ -1,16 +1,16 @@
 import React from 'react'
-import WorkloadTable from './WorkloadTable'
+import WorkloadTable from './Table'
 
 const Workload = () => {
   return (
     <>
-    <div>
+      <div>
         <h1 className='bg-red-700 text-[28px] font-bold'>Workloads</h1>
-    </div>
-    <div>
+      </div>
+      <div>
         Graph will go here
-    </div>
-    <WorkloadTable/>
+      </div>
+      <WorkloadTable />
     </>
   )
 }
