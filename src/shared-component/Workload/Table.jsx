@@ -13,7 +13,7 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUpDown, ArrowUp, ArrowDown, Info } from "lucide-react"
+import { ArrowUp, ArrowDown, Info } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
     Tooltip,
@@ -24,6 +24,7 @@ import {
 
 const formatCost = (value) => `$${value.toFixed(2)}`;
 const formatResource = (value) => `${value.toFixed(2)}`;
+const formatPercentage = (value) => `${value.toFixed(2)}%`;
 
 const data = [
     {
@@ -40,10 +41,58 @@ const data = [
         storageCost: 0.00,
         totalCost: 49.32,
         color: 'blue',
-        change: '-'
+        change: '-',
+        costBreakdown: {
+            storage: { value: 0.00, percentage: 0 },
+            onDemand: { value: 48.24, percentage: 97.81 },
+            fallback: { value: 0.00, percentage: 0 },
+            spot: { value: 1.08, percentage: 2.19 }
+        }
     },
-    { id: 2, workload: 'ingestor', type: 'StatefulSet', namespace: 'security', pods: 9, cpuRequests: 1.24, memRequests: 3.09, storageRequests: 0, cpuCost: 0.04, memCost: 0.02, storageCost: 0.00, totalCost: 19.18, color: 'blue', change: '-' },
-    { id: 3, workload: 'scalator', type: 'Pod', namespace: 'system', pods: 4, cpuRequests: 0.48, memRequests: 1.2, storageRequests: 0, cpuCost: 0.01, memCost: 0.01, storageCost: 0.00, totalCost: 5.99, color: 'yellow', change: '-' },
+    {
+        id: 2,
+        workload: 'ingestor',
+        type: 'StatefulSet',
+        namespace: 'security',
+        pods: 9,
+        cpuRequests: 1.24,
+        memRequests: 3.09,
+        storageRequests: 0,
+        cpuCost: 0.04,
+        memCost: 0.02,
+        storageCost: 0.00,
+        totalCost: 19.18,
+        color: 'blue',
+        change: '-',
+        costBreakdown: {
+            storage: { value: 0.00, percentage: 0 },
+            onDemand: { value: 18.71, percentage: 97.55 },
+            fallback: { value: 0.00, percentage: 0 },
+            spot: { value: 0.47, percentage: 2.45 }
+        }
+    },
+    {
+        id: 3,
+        workload: 'scalator',
+        type: 'Pod',
+        namespace: 'system',
+        pods: 4,
+        cpuRequests: 0.48,
+        memRequests: 1.2,
+        storageRequests: 0,
+        cpuCost: 0.01,
+        memCost: 0.01,
+        storageCost: 0.00,
+        totalCost: 5.99,
+        color: 'yellow',
+        change: '-',
+        costBreakdown: {
+            storage: { value: 0.00, percentage: 0 },
+            onDemand: { value: 5.87, percentage: 98.00 },
+            fallback: { value: 0.00, percentage: 0 },
+            spot: { value: 0.12, percentage: 2.00 }
+        }
+    },
     { id: 4, workload: 'reporter', type: 'DaemonSet', namespace: 'external-worker', pods: 6, cpuRequests: 0.91, memRequests: 2.27, storageRequests: 0, cpuCost: 0.04, memCost: 0.02, storageCost: 0.00, totalCost: 15.80, color: 'blue', change: '-' },
     { id: 5, workload: 'external-worker-sup', type: 'Job', namespace: 'logging', pods: 12, cpuRequests: 1.58, memRequests: 3.91, storageRequests: 0, cpuCost: 0.05, memCost: 0.02, storageCost: 0.00, totalCost: 22.34, color: 'green', change: '-' },
     { id: 6, workload: 'logger', type: 'Deployment', namespace: 'tools', pods: 16, cpuRequests: 2.04, memRequests: 5.1, storageRequests: 0, cpuCost: 0.06, memCost: 0.03, storageCost: 0.00, totalCost: 28.29, color: 'blue', change: '-' },
@@ -108,6 +157,95 @@ const SortButton = ({ column, children, showInfo = false, tooltipText }) => {
     );
 };
 
+// Cost breakdown tooltip component
+const CostBreakdownTooltip = ({ costData }) => {
+    // Default cost breakdown if not provided
+    const breakdown = costData?.costBreakdown || {
+        storage: { value: 0.00, percentage: 0 },
+        onDemand: { value: costData?.totalCost * 0.9778 || 0, percentage: 97.78 },
+        fallback: { value: 0.00, percentage: 0 },
+        spot: { value: costData?.totalCost * 0.0222 || 0, percentage: 2.22 }
+    };
+
+    return (
+        <div className="p-2 w-full min-w-[250px]">
+            <table className="w-full text-xs">
+                <thead>
+                    <tr className="text-left">
+                        <th className="pb-1"></th>
+                        <th className="pb-1 text-right pr-3"></th>
+                        <th className="pb-1 text-right"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td className="py-1 flex items-center">
+                            <div className="w-3 h-3 bg-blue-200 mr-2"></div>
+                            STORAGE
+                        </td>
+                        <td className="py-1 text-right pr-3">{formatCost(breakdown.storage.value)}</td>
+                        <td className="py-1 text-right text-gray-500">{formatPercentage(breakdown.storage.percentage)}</td>
+                    </tr>
+                    <tr>
+                        <td className="py-1 flex items-center">
+                            <div className="w-3 h-3 bg-blue-500 mr-2"></div>
+                            ON-DEMAND
+                        </td>
+                        <td className="py-1 text-right pr-3">{formatCost(breakdown.onDemand.value)}</td>
+                        <td className="py-1 text-right text-gray-500">{formatPercentage(breakdown.onDemand.percentage)}</td>
+                    </tr>
+                    <tr>
+                        <td className="py-1 flex items-center">
+                            <div className="w-3 h-3 bg-yellow-500 mr-2"></div>
+                            FALLBACK
+                        </td>
+                        <td className="py-1 text-right pr-3">{formatCost(breakdown.fallback.value)}</td>
+                        <td className="py-1 text-right text-gray-500">{formatPercentage(breakdown.fallback.percentage)}</td>
+                    </tr>
+                    <tr>
+                        <td className="py-1 flex items-center">
+                            <div className="w-3 h-3 bg-gray-800 mr-2"></div>
+                            SPOT
+                        </td>
+                        <td className="py-1 text-right pr-3">{formatCost(breakdown.spot.value)}</td>
+                        <td className="py-1 text-right text-gray-500">{formatPercentage(breakdown.spot.percentage)}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    );
+};
+
+// Cost bar component with tooltip
+const CostBar = ({ cost, maxCost, rowData }) => {
+    // Calculate the width percentage based on the cost value
+    const percentage = (cost / maxCost) * 100;
+    const barWidth = `${percentage}%`;
+
+    let barColor = 'bg-blue-500';
+
+    return (
+        <TooltipProvider>
+            <Tooltip>
+                <TooltipTrigger className="w-full text-left">
+                    <div className="flex flex-col">
+                        <div className="mb-1">{formatCost(cost)}</div>
+                        <div className="w-full bg-gray-300 rounded-full h-2">
+                            <div
+                                className={`${barColor} h-2 rounded-full`}
+                                style={{ width: barWidth }}
+                            />
+                        </div>
+                    </div>
+                </TooltipTrigger>
+                <TooltipContent side="top" className="bg-gray-600 shadow-lg border rounded-md p-0">
+                    <CostBreakdownTooltip costData={rowData} />
+                </TooltipContent>
+            </Tooltip>
+        </TooltipProvider>
+    );
+};
+
 const columns = [
     {
         id: "select",
@@ -142,9 +280,9 @@ const columns = [
     {
         accessorKey: "pods",
         header: ({ column }) => (
-            <SortButton 
-                column={column} 
-                showInfo 
+            <SortButton
+                column={column}
+                showInfo
                 tooltipText="Number of running pods in this workload"
             >
                 PODS
@@ -157,9 +295,9 @@ const columns = [
             {
                 accessorKey: "cpuRequests",
                 header: ({ column }) => (
-                    <SortButton 
-                        column={column} 
-                        showInfo 
+                    <SortButton
+                        column={column}
+                        showInfo
                         tooltipText="CPU resource requests per hour"
                     >
                         CPU
@@ -170,9 +308,9 @@ const columns = [
             {
                 accessorKey: "memRequests",
                 header: ({ column }) => (
-                    <SortButton 
-                        column={column} 
-                        showInfo 
+                    <SortButton
+                        column={column}
+                        showInfo
                         tooltipText="Memory resource requests per hour"
                     >
                         MEM
@@ -183,9 +321,9 @@ const columns = [
             {
                 accessorKey: "storageRequests",
                 header: ({ column }) => (
-                    <SortButton 
-                        column={column} 
-                        showInfo 
+                    <SortButton
+                        column={column}
+                        showInfo
                         tooltipText="Storage resource requests per hour"
                     >
                         STO.
@@ -218,22 +356,26 @@ const columns = [
     {
         accessorKey: "totalCost",
         header: ({ column }) => (
-            <SortButton 
-                column={column} 
-                showInfo 
+            <SortButton
+                column={column}
+                showInfo
                 tooltipText="Total cost of all resources"
             >
                 Total Cost
             </SortButton>
         ),
-        cell: ({ row }) => formatCost(row.original.totalCost),
+        cell: ({ row }) => {
+            // Find the maximum cost to properly scale the bars
+            const maxCost = Math.max(...data.map(item => item.totalCost));
+            return <CostBar cost={row.original.totalCost} maxCost={maxCost} rowData={row.original} />;
+        },
     },
     {
         accessorKey: "change",
         header: ({ column }) => (
-            <SortButton 
-                column={column} 
-                showInfo 
+            <SortButton
+                column={column}
+                showInfo
                 tooltipText="Change in cost compared to previous period"
             >
                 Change
@@ -265,7 +407,7 @@ const WorkloadTable = () => {
     return (
         <div className="w-full">
             <div className="text-sm font-medium mb-1">
-                {Object.keys(rowSelection).length > 0 ? 
+                {Object.keys(rowSelection).length > 0 ?
                     `${Object.keys(rowSelection).length}/` : ''
                 }
                 {table.getFilteredRowModel().rows.length} Workloads
