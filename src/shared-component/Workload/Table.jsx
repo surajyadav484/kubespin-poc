@@ -264,6 +264,12 @@ const WorkloadTable = () => {
 
     return (
         <div className="w-full">
+            <div className="text-sm font-medium mb-1">
+                {Object.keys(rowSelection).length > 0 ? 
+                    `${Object.keys(rowSelection).length}/` : ''
+                }
+                {table.getFilteredRowModel().rows.length} Workloads
+            </div>
             <div className="rounded-md border">
                 <div className="max-h-[600px] overflow-auto">
                     <div className="min-w-full inline-block align-middle">
