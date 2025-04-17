@@ -1,115 +1,306 @@
-import { TrendingUp } from "lucide-react";
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
+import React, { useState, useEffect } from "react";
+import { format, parse, isWithinInterval, subDays, subMonths, startOfMonth, endOfMonth, startOfWeek, endOfWeek, startOfDay } from "date-fns";
+import { Calendar as CalendarIcon } from "lucide-react";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import {
     Card,
     CardContent,
     CardDescription,
-    CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import {
-    ChartContainer,
-    ChartTooltip,
-    ChartTooltipContent,
-} from "@/components/ui/chart";
-import chartData from "../../data.json";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { LineChart, Line, CartesianGrid, Tooltip, XAxis, YAxis, ResponsiveContainer } from "recharts";
+import jsonData from '../../data.json'
 
-// const chartData = [
-//   { month: "January", desktop: 186, mobile: 80 },
-//   { month: "February", desktop: 305, mobile: 200 },
-//   { month: "March", desktop: 237, mobile: 120 },
-//   { month: "April", desktop: 73, mobile: 190 },
-//   { month: "May", desktop: 209, mobile: 130 },
-//   { month: "June", desktop: 214, mobile: 140 },
-// ];
+// For a more realistic dataset that shows all records
+const fullData = jsonData;
 
-const chartConfig = {
-    Snapshots: {
-        label: "Snapshots",
-        color: "blue",
-    },
-    Ingestor: {
-        label: "Ingestor",
-        color: "green",
-    },
-    Scalator: {
-        label: "Scalator",
-        color: "red",
-    },
-    Reporter: {
-        label: "Reporter",
-        color: "yellow",
-    },
-    ExternalWorkerSupport: {
-        label: "ExternalWorkerSupport",
-        color: "violet",
-    },
-};
+export default function DateRangePickerWithData() {
+    const today = startOfDay(new Date());
 
-export default function WorkloadGraph() {
+    const [dateRange, setDateRange] = useState({
+        // from: startOfMonth(today),
+        from: subDays(today, 29),
+        to: today,
+    });
+
+    const [filteredData, setFilteredData] = useState([]);
+    const [activeMetric, setActiveMetric] = useState("");
+
+    // Parse full JSON data and convert date strings to proper Date objects
+    const parsedData = fullData.map(item => {
+        // For DD/MM/YYYY format
+        const dateParts = item.Date.split('/');
+        const parsedDate = new Date(
+            parseInt(dateParts[2]),
+            parseInt(dateParts[1]) - 1,
+            parseInt(dateParts[0])
+        );
+
+        return {
+            ...item,
+            parsedDate,
+            formattedDate: format(parsedDate, "MMM dd"),
+            displayDate: format(parsedDate, "dd"),
+        };
+    });
+
+    // Presets configuration
+    const presets = [
+        {
+            name: "This Month",
+            getValue: () => ({
+                from: startOfMonth(today),
+                to: today,
+            }),
+        },
+        {
+            name: "Last 7 Days",
+            getValue: () => ({
+                from: subDays(today, 6),
+                to: today,
+            }),
+        },
+        {
+            name: "Last Week",
+            getValue: () => {
+                const lastWeekStart = startOfWeek(subDays(today, 7));
+                const lastWeekEnd = endOfWeek(subDays(today, 7));
+                return {
+                    from: lastWeekStart,
+                    to: lastWeekEnd,
+                };
+            },
+        },
+        {
+            name: "Last 2 Weeks",
+            getValue: () => ({
+                from: subDays(today, 13),
+                to: today,
+            }),
+        },
+        {
+            name: "Last 30 Days",
+            getValue: () => ({
+                from: subDays(today, 29),
+                to: today,
+            }),
+        },
+        {
+            name: "Last Month",
+            getValue: () => {
+                const lastMonthStart = startOfMonth(subMonths(today, 1));
+                const lastMonthEnd = endOfMonth(subMonths(today, 1));
+                return {
+                    from: lastMonthStart,
+                    to: lastMonthEnd,
+                };
+            },
+        },
+    ];
+
+    const handlePresetChange = (presetName) => {
+        const preset = presets.find((p) => p.name === presetName);
+        if (preset) {
+            const newDateRange = preset.getValue();
+            setDateRange(newDateRange);
+        }
+    };
+
+    const metrics = ["Snapshots", "Ingestor", "Scalator", "Reporter", "ExternalWorkerSupport"];
+    const metricColors = {
+        Snapshots: "#2563eb",
+        Ingestor: "#10b981",
+        Scalator: "#8b5cf6",
+        Reporter: "#eab308",
+        ExternalWorkerSupport: "#ef4444"
+    };
+
+    // Filter data based on selected date range
+    useEffect(() => {
+        if (dateRange.from && dateRange.to) {
+            const filtered = parsedData.filter(item =>
+                isWithinInterval(item.parsedDate, {
+                    start: dateRange.from,
+                    end: dateRange.to
+                })
+            );
+
+            // Sort the filtered data by date for the chart
+            const sortedFiltered = [...filtered].sort((a, b) => a.parsedDate - b.parsedDate);
+            setFilteredData(sortedFiltered);
+        }
+    }, [dateRange]);
+
+    const CustomTooltip = ({ active, payload, label }) => {
+        if (active && payload && payload.length) {
+            return (
+                <div className="bg-white p-4 border rounded shadow-sm">
+                    {/* <p className="font-medium text-gray-900">{label}</p> */}
+                    <p className="font-medium text-gray-900">{payload[0]?.payload?.formattedDate}</p>
+                    {payload.map((entry, index) => (
+                        <p key={index} style={{ color: entry.color }} className="flex justify-between text-sm gap-10">
+                            <span>{entry.name}</span> <span>${entry.value}</span>
+                        </p>
+                    ))}
+                </div>
+            );
+        }
+        return null;
+    };
+
     return (
-        <Card>
-            <CardHeader>
-                <CardDescription>COMPUTE COST PER WORKLOAD</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <ChartContainer config={chartConfig}>
-                    <LineChart
-                        accessibilityLayer
-                        data={chartData}
-                        margin={{
-                            left: 12,
-                            right: 12,
-                        }}
-                    >
-                        <CartesianGrid vertical={false} />
-                        <XAxis
-                            dataKey="Date"
-                            tickLine={false}
-                            axisLine={false}
-                            tickMargin={8}
-                            tickFormatter={(value) => value.slice(0, 3)}
-                        />
-                        <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-                        <Line
-                            dataKey="Snapshots"
-                            type="linear"
-                            stroke={chartConfig.Snapshots.color}
-                            strokeWidth={2}
-                            dot={false}
-                        />
-                        <Line
-                            dataKey="Ingestor"
-                            type="linear"
-                            stroke={chartConfig.Ingestor.color}
-                            strokeWidth={2}
-                            dot={false}
-                        />
-                        <Line
-                            dataKey="Scalator"
-                            type="linear"
-                            stroke={chartConfig.Scalator.color}
-                            strokeWidth={2}
-                            dot={false}
-                        />
-                        <Line
-                            dataKey="Reporter"
-                            type="linear"
-                            stroke={chartConfig.Reporter.color}
-                            strokeWidth={2}
-                            dot={false}
-                        />
-                        <Line
-                            dataKey="ExternalWorkerSupport"
-                            type="linear"
-                            stroke={chartConfig.ExternalWorkerSupport.color}
-                            strokeWidth={2}
-                            dot={false}
-                        />
-                    </LineChart>
-                </ChartContainer>
-            </CardContent>
-        </Card>
+        <div className="w-full mb-5">
+            <Card>
+                <CardHeader>
+                    <CardTitle>Metrics Dashboard</CardTitle>
+                    <CardDescription>
+                        Select a date range to filter the metrics data
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <div className="flex flex-wrap gap-6">
+                        <div className="w-full md:w-64">
+                            <Popover>
+                                <PopoverTrigger asChild>
+                                    <Button
+                                        id="date"
+                                        variant="outline"
+                                        className="w-full justify-start text-left font-normal"
+                                    >
+                                        <CalendarIcon className="mr-2 h-4 w-4" />
+                                        {dateRange?.from ? (
+                                            dateRange.to ? (
+                                                <>
+                                                    {format(dateRange.from, "MMM dd, yyyy")} -{" "}
+                                                    {format(dateRange.to, "MMM dd, yyyy")}
+                                                </>
+                                            ) : (
+                                                format(dateRange.from, "MMM dd, yyyy")
+                                            )
+                                        ) : (
+                                            <span>Pick a date range</span>
+                                        )}
+                                    </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-0" align="start">
+                                    <div className="p-2 border-b">
+                                        <Select
+                                            onValueChange={handlePresetChange}
+                                        >
+                                            <SelectTrigger className="w-full">
+                                                <SelectValue placeholder="Select a preset" />
+                                            </SelectTrigger>
+                                            <SelectContent position="popper">
+                                                {presets.map((preset) => (
+                                                    <SelectItem key={preset.name} value={preset.name}>
+                                                        {preset.name}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+                                    <div className="p-3">
+                                        <Calendar
+                                            mode="range"
+                                            defaultMonth={dateRange?.from}
+                                            selected={dateRange}
+                                            onSelect={setDateRange}
+                                            numberOfMonths={2}
+                                        />
+                                    </div>
+                                </PopoverContent>
+                            </Popover>
+                        </div>
+
+                        <div className="w-full mt-2">
+                            <div className="flex items-center justify-between mb-4">
+                                <div className="text-sm">
+                                    COMPUTE COST PER WORKLOAD
+                                </div>
+                                <div>
+                                    <Select
+                                        value={activeMetric}
+                                        onValueChange={setActiveMetric}
+                                    >
+                                        <SelectTrigger className="w-40">
+                                            <SelectValue placeholder="Select metric" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {metrics.map(metric => (
+                                                <SelectItem key={metric} value={metric}>
+                                                    {metric}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                            </div>
+
+                            {/* Shadcn-styled Linear Line Chart */}
+                            {/* <Card>
+                                <CardContent className="p-6"> */}
+                                    <div className="h-80">
+                                        <ResponsiveContainer width="100%" height="100%">
+                                            <LineChart
+                                                data={filteredData}
+                                                margin={{
+                                                    top: 5,
+                                                    right: 10,
+                                                    left: 10,
+                                                    bottom: 0,
+                                                }}
+                                            >
+                                                <CartesianGrid vertical={false} stroke="#f0f0f0" />
+                                                <XAxis
+                                                    dataKey="displayDate"
+                                                    stroke="black"
+                                                    fontSize={12}
+                                                    tickLine={false}
+                                                    axisLine={false}
+                                                />
+                                                <YAxis
+                                                    stroke="black"
+                                                    fontSize={12}
+                                                    tickLine={false}
+                                                    axisLine={false}
+                                                    tickFormatter={(value) => `$${value}`}
+                                                />
+                                                <Tooltip content={<CustomTooltip />} />
+                                                {metrics.map(metric => (
+                                                    <Line
+                                                        key={metric}
+                                                        type="linear"
+                                                        dataKey={metric}
+                                                        stroke={metricColors[metric]}
+                                                        strokeWidth={metric === activeMetric ? 4 : 2}
+                                                        dot={metric === activeMetric}
+                                                        activeDot={metric === activeMetric ? 4 : 2}
+                                                        opacity={metric === activeMetric ? 4 : 2}
+                                                    />
+                                                ))}
+                                            </LineChart>
+                                        </ResponsiveContainer>
+                                    </div>
+                                {/* </CardContent>
+                            </Card> */}
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
+        </div>
     );
 }
