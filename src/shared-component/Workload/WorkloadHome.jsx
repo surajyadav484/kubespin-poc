@@ -1,5 +1,6 @@
 import React from 'react'
 import WorkloadTable from './Table'
+import WorkloadGraph from './WorkloadGraph'
 
 const Workload = () => {
   return (
@@ -8,7 +9,7 @@ const Workload = () => {
         <h1 className='bg-red-700 text-[28px] font-bold'>Workloads</h1>
       </div>
       <div>
-        Graph will go here
+        <WorkloadGraph/>
       </div>
       <WorkloadTable />
     </>

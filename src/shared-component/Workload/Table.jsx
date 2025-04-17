@@ -21,6 +21,20 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { Button } from "@/components/ui/button"
+import { Switch } from "@/components/ui/switch"
+import { Label } from "@/components/ui/label"
+import {
+    Drawer,
+    DrawerClose,
+    DrawerContent,
+    DrawerDescription,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerTrigger,
+} from "@/components/ui/drawer"
+import { SlidersHorizontal } from "lucide-react"
 
 const formatCost = (value) => `$${value.toFixed(2)}`;
 const formatResource = (value) => `${value.toFixed(2)}`;
@@ -246,148 +260,305 @@ const CostBar = ({ cost, maxCost, rowData }) => {
     );
 };
 
-const columns = [
-    {
-        id: "select",
-        header: ({ table }) => (
-            <Checkbox
-                checked={table.getIsAllPageRowsSelected()}
-                onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-                aria-label="Select all"
-            />
-        ),
-        cell: ({ row }) => (
-            <Checkbox
-                checked={row.getIsSelected()}
-                onCheckedChange={(value) => row.toggleSelected(!!value)}
-                aria-label="Select row"
-            />
-        ),
-        enableSorting: false,
-    },
-    {
-        accessorKey: "workload",
-        header: ({ column }) => <SortButton column={column}>WORKLOAD</SortButton>
-    },
-    {
-        accessorKey: "type",
-        header: ({ column }) => <SortButton column={column}>TYPE</SortButton>
-    },
-    {
-        accessorKey: "namespace",
-        header: ({ column }) => <SortButton column={column}>NAMESPACE</SortButton>
-    },
-    {
-        accessorKey: "pods",
-        header: ({ column }) => (
-            <SortButton
-                column={column}
-                showInfo
-                tooltipText="Number of running pods in this workload"
-            >
-                PODS
-            </SortButton>
-        )
-    },
-    {
-        header: "RESOURCES",
-        columns: [
-            {
-                accessorKey: "cpuRequests",
-                header: ({ column }) => (
-                    <SortButton
-                        column={column}
-                        showInfo
-                        tooltipText="CPU resource requests per hour"
-                    >
-                        CPU
-                    </SortButton>
-                ),
-                cell: ({ row }) => `${formatResource(row.original.cpuRequests)} CPU`,
-            },
-            {
-                accessorKey: "memRequests",
-                header: ({ column }) => (
-                    <SortButton
-                        column={column}
-                        showInfo
-                        tooltipText="Memory resource requests per hour"
-                    >
-                        MEM
-                    </SortButton>
-                ),
-                cell: ({ row }) => `${formatResource(row.original.memRequests)} GiB`,
-            },
-            {
-                accessorKey: "storageRequests",
-                header: ({ column }) => (
-                    <SortButton
-                        column={column}
-                        showInfo
-                        tooltipText="Storage resource requests per hour"
-                    >
-                        STO.
-                    </SortButton>
-                ),
-                cell: ({ row }) => `${formatResource(row.original.storageRequests)} GiB`,
-            },
-        ],
-    },
-    {
-        header: "COSTS",
-        columns: [
-            {
-                accessorKey: "cpuCost",
-                header: ({ column }) => <SortButton column={column}>CPU</SortButton>,
-                cell: ({ row }) => formatCost(row.original.cpuCost),
-            },
-            {
-                accessorKey: "memCost",
-                header: ({ column }) => <SortButton column={column}>MEM</SortButton>,
-                cell: ({ row }) => formatCost(row.original.memCost),
-            },
-            {
-                accessorKey: "storageCost",
-                header: ({ column }) => <SortButton column={column}>STO.</SortButton>,
-                cell: ({ row }) => formatCost(row.original.storageCost),
-            },
-        ],
-    },
-    {
-        accessorKey: "totalCost",
-        header: ({ column }) => (
-            <SortButton
-                column={column}
-                showInfo
-                tooltipText="Total cost of all resources"
-            >
-                Total Cost
-            </SortButton>
-        ),
-        cell: ({ row }) => {
-            // Find the maximum cost to properly scale the bars
-            const maxCost = Math.max(...data.map(item => item.totalCost));
-            return <CostBar cost={row.original.totalCost} maxCost={maxCost} rowData={row.original} />;
-        },
-    },
-    {
-        accessorKey: "change",
-        header: ({ column }) => (
-            <SortButton
-                column={column}
-                showInfo
-                tooltipText="Change in cost compared to previous period"
-            >
-                Change
-            </SortButton>
-        ),
-        cell: ({ row }) => row.original.change,
-    }
-]
+const ColumnVisibilityDrawer = ({ table }) => {
+    const getColumnDisplay = (column) => {
+        // Special case for select column
+        if (column.id === "select") {
+            return "Select";
+        }
+
+        // Group headers
+        if (column.columnDef.header === "RESOURCES" || column.columnDef.header === "COSTS") {
+            return column.columnDef.header;
+        }
+
+        // Function headers with SortButton
+        if (typeof column.columnDef.header === 'function') {
+            try {
+                const header = column.columnDef.header({ column });
+                if (React.isValidElement(header) && header.props.children) {
+                    if (typeof header.props.children === 'string') {
+                        return header.props.children;
+                    }
+                    // Handle SortButton children
+                    if (Array.isArray(header.props.children)) {
+                        const textChild = header.props.children.find(child =>
+                            typeof child === 'string' ||
+                            (child.props && child.props.children)
+                        );
+                        return textChild?.props?.children || textChild || column.id;
+                    }
+                    return header.props.children;
+                }
+            } catch (e) {
+                console.warn(`Error getting display name for column ${column.id}:`, e);
+            }
+        }
+
+        // Fallback to ID or accessor
+        return column.columnDef.header || column.id;
+    };
+    const mainColumns = table.getAllColumns().filter(column =>
+        !column.parent &&
+        column.getCanHide() &&
+        column.id !== "select"
+    );
+
+    const resourceColumns = table.getAllColumns().filter(column => column.parent?.id === 'RESOURCES');
+    const costColumns = table.getAllColumns().filter(column => column.parent?.id === 'COSTS');
+
+    const toggleParentColumnVisibility = (parentColumn, isVisible) => {
+        parentColumn.toggleVisibility(isVisible);
+        parentColumn.columns.forEach(childColumn => {
+            childColumn.toggleVisibility(isVisible);
+        });
+    };
+
+    return (
+        <Drawer>
+            <DrawerTrigger asChild>
+                <Button variant="outline" size="sm" className="ml-auto h-8 flex gap-2">
+                    <SlidersHorizontal className="h-4 w-4" />
+                    <span>Columns</span>
+                </Button>
+            </DrawerTrigger>
+            <DrawerContent side="right">
+                <DrawerHeader>
+                    <DrawerTitle>Column Visibility</DrawerTitle>
+                    <DrawerDescription>
+                        Toggle columns to show or hide them from the table.
+                    </DrawerDescription>
+                </DrawerHeader>
+                <div className="p-4">
+                    <div className="space-y-6">
+                        {/* Main columns */}
+                        <div className="space-y-3">
+                            <h4 className="font-medium text-sm">Main Columns</h4>
+                            <div className="space-y-3 ml-2">
+                                {mainColumns.map(column => (
+                                    <div key={column.id} className="flex items-center space-x-2">
+                                        <Switch
+                                            id={column.id}
+                                            checked={column.getIsVisible()}
+                                            onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                                        />
+                                        <Label htmlFor={column.id}>
+                                            {getColumnDisplay(column)}
+                                        </Label>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Resource columns */}
+                        <div className="space-y-3">
+                            <h4 className="font-medium text-sm">Resources</h4>
+                            <div className="space-y-3 ml-2">
+                                <div className="flex items-center space-x-2">
+                                    <Switch
+                                        id="resources"
+                                        checked={resourceColumns.every(column => column.getIsVisible())}
+                                        onCheckedChange={(value) => toggleParentColumnVisibility(table.getColumn('RESOURCES'), !!value)}
+                                    />
+                                    <Label htmlFor="resources">RESOURCES</Label>
+                                </div>
+                                {resourceColumns.map(column => (
+                                    <div key={column.id} className="flex items-center space-x-2 ml-4">
+                                        <Switch
+                                            id={column.id}
+                                            checked={column.getIsVisible()}
+                                            onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                                        />
+                                        <Label htmlFor={column.id}>
+                                            {getColumnDisplay(column)}
+                                        </Label>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Cost columns */}
+                        <div className="space-y-3">
+                            <h4 className="font-medium text-sm">Costs</h4>
+                            <div className="space-y-3 ml-2">
+                                <div className="flex items-center space-x-2">
+                                    <Switch
+                                        id="costs"
+                                        checked={costColumns.every(column => column.getIsVisible())}
+                                        onCheckedChange={(value) => toggleParentColumnVisibility(table.getColumn('COSTS'), !!value)}
+                                    />
+                                    <Label htmlFor="costs">COSTS</Label>
+                                </div>
+                                {costColumns.map(column => (
+                                    <div key={column.id} className="flex items-center space-x-2 ml-4">
+                                        <Switch
+                                            id={column.id}
+                                            checked={column.getIsVisible()}
+                                            onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                                        />
+                                        <Label htmlFor={column.id}>
+                                            {getColumnDisplay(column)}
+                                        </Label>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <DrawerFooter>
+                    <DrawerClose asChild>
+                        <Button variant="outline">Close</Button>
+                    </DrawerClose>
+                </DrawerFooter>
+            </DrawerContent>
+        </Drawer>
+    );
+};
 
 const WorkloadTable = () => {
     const [sorting, setSorting] = useState([])
     const [rowSelection, setRowSelection] = useState({})
+    const [columnVisibility, setColumnVisibility] = useState({})
+
+    const columns = [
+        {
+            id: "select",
+            // Move header definition here to access table instance
+            header: ({ table }) => (
+                <Checkbox
+                    checked={table.getIsAllPageRowsSelected()}
+                    onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+                    aria-label="Select all"
+                />
+            ),
+            cell: ({ row }) => (
+                <Checkbox
+                    checked={row.getIsSelected()}
+                    onCheckedChange={(value) => row.toggleSelected(!!value)}
+                    aria-label="Select row"
+                />
+            ),
+            enableSorting: false,
+        },
+        {
+            accessorKey: "workload",
+            header: ({ column }) => <SortButton column={column}>WORKLOAD</SortButton>
+        },
+        {
+            accessorKey: "type",
+            header: ({ column }) => <SortButton column={column}>TYPE</SortButton>
+        },
+        {
+            accessorKey: "namespace",
+            header: ({ column }) => <SortButton column={column}>NAMESPACE</SortButton>
+        },
+        {
+            accessorKey: "pods",
+            header: ({ column }) => (
+                <SortButton
+                    column={column}
+                    showInfo
+                    tooltipText="Number of running pods in this workload"
+                >
+                    PODS
+                </SortButton>
+            )
+        },
+        {
+            header: "RESOURCES",
+            columns: [
+                {
+                    accessorKey: "cpuRequests",
+                    header: ({ column }) => (
+                        <SortButton
+                            column={column}
+                            showInfo
+                            tooltipText="CPU resource requests per hour"
+                        >
+                            CPU
+                        </SortButton>
+                    ),
+                    cell: ({ row }) => `${formatResource(row.original.cpuRequests)} CPU`,
+                },
+                {
+                    accessorKey: "memRequests",
+                    header: ({ column }) => (
+                        <SortButton
+                            column={column}
+                            showInfo
+                            tooltipText="Memory resource requests per hour"
+                        >
+                            MEM
+                        </SortButton>
+                    ),
+                    cell: ({ row }) => `${formatResource(row.original.memRequests)} GiB`,
+                },
+                {
+                    accessorKey: "storageRequests",
+                    header: ({ column }) => (
+                        <SortButton
+                            column={column}
+                            showInfo
+                            tooltipText="Storage resource requests per hour"
+                        >
+                            STO.
+                        </SortButton>
+                    ),
+                    cell: ({ row }) => `${formatResource(row.original.storageRequests)} GiB`,
+                },
+            ],
+        },
+        {
+            header: "COSTS",
+            columns: [
+                {
+                    accessorKey: "cpuCost",
+                    header: ({ column }) => <SortButton column={column}>CPU</SortButton>,
+                    cell: ({ row }) => formatCost(row.original.cpuCost),
+                },
+                {
+                    accessorKey: "memCost",
+                    header: ({ column }) => <SortButton column={column}>MEM</SortButton>,
+                    cell: ({ row }) => formatCost(row.original.memCost),
+                },
+                {
+                    accessorKey: "storageCost",
+                    header: ({ column }) => <SortButton column={column}>STO.</SortButton>,
+                    cell: ({ row }) => formatCost(row.original.storageCost),
+                },
+            ],
+        },
+        {
+            accessorKey: "totalCost",
+            header: ({ column }) => (
+                <SortButton
+                    column={column}
+                    showInfo
+                    tooltipText="Total cost of all resources"
+                >
+                    Total Cost
+                </SortButton>
+            ),
+            cell: ({ row }) => {
+                // Find the maximum cost to properly scale the bars
+                const maxCost = Math.max(...data.map(item => item.totalCost));
+                return <CostBar cost={row.original.totalCost} maxCost={maxCost} rowData={row.original} />;
+            },
+        },
+        {
+            accessorKey: "change",
+            header: ({ column }) => (
+                <SortButton
+                    column={column}
+                    showInfo
+                    tooltipText="Change in cost compared to previous period"
+                >
+                    Change
+                </SortButton>
+            ),
+            cell: ({ row }) => row.original.change,
+        }
+    ]
 
     const table = useReactTable({
         data,
@@ -396,21 +567,26 @@ const WorkloadTable = () => {
         getSortedRowModel: getSortedRowModel(),
         onSortingChange: setSorting,
         onRowSelectionChange: setRowSelection,
+        onColumnVisibilityChange: setColumnVisibility,
         state: {
             sorting,
             rowSelection,
+            columnVisibility,
         },
         enableRowSelection: true,
         enableColumnGroups: true,
-    })
+    });
 
     return (
         <div className="w-full">
-            <div className="text-sm font-medium mb-1">
-                {Object.keys(rowSelection).length > 0 ?
-                    `${Object.keys(rowSelection).length}/` : ''
-                }
-                {table.getFilteredRowModel().rows.length} Workloads
+            <div className="flex items-center justify-between mb-4">
+                <div className="text-sm font-medium">
+                    {Object.keys(rowSelection).length > 0 ?
+                        `${Object.keys(rowSelection).length}/` : ''
+                    }
+                    {table.getFilteredRowModel().rows.length} Workloads
+                </div>
+                {/* <ColumnVisibilityDrawer table={table} /> */}
             </div>
             <div className="rounded-md border">
                 <div className="max-h-[600px] overflow-auto">
@@ -461,7 +637,7 @@ const WorkloadTable = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default WorkloadTable
+export default WorkloadTable;
