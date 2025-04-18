@@ -415,6 +415,25 @@ const ColumnVisibilityDrawer = ({ table }) => {
     );
 };
 
+function IndeterminateCheckbox({ indeterminate, className = "", ...rest }) {
+    const ref = React.useRef(null)
+
+    React.useEffect(() => {
+        if (typeof indeterminate === "boolean") {
+            ref.current.indeterminate = !rest.checked && indeterminate
+        }
+    }, [ref, indeterminate])
+
+    return (
+        <input
+            type="checkbox"
+            ref={ref}
+            className={className + " cursor-pointer"}
+            {...rest}
+        />
+    )
+}
+
 const WorkloadTable = () => {
     const [sorting, setSorting] = useState([])
     const [rowSelection, setRowSelection] = useState({})
@@ -425,17 +444,32 @@ const WorkloadTable = () => {
             id: "select",
             // Move header definition here to access table instance
             header: ({ table }) => (
-                <Checkbox
-                    checked={table.getIsAllPageRowsSelected()}
-                    onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-                    aria-label="Select all"
+                // <Checkbox
+                //     checked={table.getIsAllPageRowsSelected()}
+                //     onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+                //     aria-label="Select all"
+                // />
+                <IndeterminateCheckbox
+                    {...{
+                        checked: table.getIsAllRowsSelected(),
+                        indeterminate: table.getIsSomeRowsSelected(),
+                        onChange: table.getToggleAllRowsSelectedHandler()
+                    }}
                 />
             ),
             cell: ({ row }) => (
-                <Checkbox
-                    checked={row.getIsSelected()}
-                    onCheckedChange={(value) => row.toggleSelected(!!value)}
-                    aria-label="Select row"
+                // <Checkbox
+                //     checked={row.getIsSelected()}
+                //     onCheckedChange={(value) => row.toggleSelected(!!value)}
+                //     aria-label="Select row"
+                // />
+                <IndeterminateCheckbox
+                    {...{
+                        checked: row.getIsSelected(),
+                        disabled: !row.getCanSelect(),
+                        indeterminate: row.getIsSomeSelected(),
+                        onChange: row.getToggleSelectedHandler()
+                    }}
                 />
             ),
             enableSorting: false,
