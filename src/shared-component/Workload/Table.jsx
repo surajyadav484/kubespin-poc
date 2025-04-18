@@ -13,7 +13,7 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUp, ArrowDown, Info } from "lucide-react"
+import { ArrowUp, ArrowDown, Info, UnfoldHorizontal } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
     Tooltip,
@@ -473,18 +473,27 @@ const WorkloadTable = () => {
                 />
             ),
             enableSorting: false,
+            enableResizing: false,
         },
         {
+            // accessorKey: "workload",
+            // header: ({ column }) => <SortButton column={column}>WORKLOAD</SortButton>
             accessorKey: "workload",
-            header: ({ column }) => <SortButton column={column}>WORKLOAD</SortButton>
+            header: ({ column }) => <SortButton column={column}>WORKLOAD</SortButton>,
+            size: 200,
+            minSize: 100,
+            maxSize: 400,
+            enableResizing: true,
         },
         {
             accessorKey: "type",
-            header: ({ column }) => <SortButton column={column}>TYPE</SortButton>
+            header: ({ column }) => <SortButton column={column}>TYPE</SortButton>,
+            enableResizing: false,
         },
         {
             accessorKey: "namespace",
-            header: ({ column }) => <SortButton column={column}>NAMESPACE</SortButton>
+            header: ({ column }) => <SortButton column={column}>NAMESPACE</SortButton>,
+            enableResizing: false,
         },
         {
             accessorKey: "pods",
@@ -496,7 +505,8 @@ const WorkloadTable = () => {
                 >
                     PODS
                 </SortButton>
-            )
+            ),
+            enableResizing: false,
         },
         {
             header: "RESOURCES",
@@ -513,6 +523,7 @@ const WorkloadTable = () => {
                         </SortButton>
                     ),
                     cell: ({ row }) => `${formatResource(row.original.cpuRequests)} CPU`,
+                    enableResizing: false,
                 },
                 {
                     accessorKey: "memRequests",
@@ -526,6 +537,7 @@ const WorkloadTable = () => {
                         </SortButton>
                     ),
                     cell: ({ row }) => `${formatResource(row.original.memRequests)} GiB`,
+                    enableResizing: false,
                 },
                 {
                     accessorKey: "storageRequests",
@@ -539,8 +551,10 @@ const WorkloadTable = () => {
                         </SortButton>
                     ),
                     cell: ({ row }) => `${formatResource(row.original.storageRequests)} GiB`,
+                    enableResizing: false,
                 },
             ],
+            enableResizing: false,
         },
         {
             header: "COSTS",
@@ -549,18 +563,22 @@ const WorkloadTable = () => {
                     accessorKey: "cpuCost",
                     header: ({ column }) => <SortButton column={column}>CPU</SortButton>,
                     cell: ({ row }) => formatCost(row.original.cpuCost),
+                    enableResizing: false,
                 },
                 {
                     accessorKey: "memCost",
                     header: ({ column }) => <SortButton column={column}>MEM</SortButton>,
                     cell: ({ row }) => formatCost(row.original.memCost),
+                    enableResizing: false,
                 },
                 {
                     accessorKey: "storageCost",
                     header: ({ column }) => <SortButton column={column}>STO.</SortButton>,
                     cell: ({ row }) => formatCost(row.original.storageCost),
+                    enableResizing: false,
                 },
             ],
+            enableResizing: false,
         },
         {
             accessorKey: "totalCost",
@@ -578,6 +596,7 @@ const WorkloadTable = () => {
                 const maxCost = Math.max(...data.map(item => item.totalCost));
                 return <CostBar cost={row.original.totalCost} maxCost={maxCost} rowData={row.original} />;
             },
+            enableResizing: false,
         },
         {
             accessorKey: "change",
@@ -591,6 +610,7 @@ const WorkloadTable = () => {
                 </SortButton>
             ),
             cell: ({ row }) => row.original.change,
+            enableResizing: false,
         }
     ]
 
@@ -609,7 +629,9 @@ const WorkloadTable = () => {
         },
         enableRowSelection: true,
         enableColumnGroups: true,
+        columnResizeMode: "onChange",
     });
+
 
     return (
         <div className="w-full">
@@ -620,7 +642,6 @@ const WorkloadTable = () => {
                     }
                     {table.getFilteredRowModel().rows.length} Workloads
                 </div>
-                {/* <ColumnVisibilityDrawer table={table} /> */}
             </div>
             <div className="rounded-md border">
                 <div className="max-h-[600px] overflow-auto">
@@ -633,8 +654,8 @@ const WorkloadTable = () => {
                                             <TableHead
                                                 key={header.id}
                                                 colSpan={header.colSpan}
-                                                className={`align-center ${header.column.columnDef.columns ? 'border-x' : 'border-x-0'
-                                                    }`}
+                                                className={`align-center relative ${header.column.columnDef.columns ? 'border-x' : 'border-x-0'}`}
+                                                style={{ width: header.getSize() }}
                                             >
                                                 {header.isPlaceholder
                                                     ? null
@@ -642,6 +663,17 @@ const WorkloadTable = () => {
                                                         header.column.columnDef.header,
                                                         header.getContext()
                                                     )}
+
+                                                {header.column.getCanResize() && headerGroup.depth > 0 && (
+                                                    <div
+                                                        onMouseDown={header.getResizeHandler()}
+                                                        onTouchStart={header.getResizeHandler()}
+                                                        className="absolute right-0 top-0 h-full w-4 flex items-center justify-center cursor-col-resize select-none touch-none cursor-pointer"
+                                                        style={{ transform: 'translateX(10%)' }}
+                                                    >
+                                                        <UnfoldHorizontal />
+                                                    </div>
+                                                )}
                                             </TableHead>
                                         ))}
                                     </TableRow>
@@ -652,7 +684,7 @@ const WorkloadTable = () => {
                                     table.getRowModel().rows.map((row) => (
                                         <TableRow key={row.id}>
                                             {row.getVisibleCells().map((cell) => (
-                                                <TableCell key={cell.id}>
+                                                <TableCell key={cell.id} style={{ width: cell.column.getSize() }}>
                                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                                 </TableCell>
                                             ))}
