@@ -165,11 +165,31 @@ export default function DateRangePickerWithData() {
     return (
         <div className="w-full mb-5">
             <Card>
-                <CardHeader>
-                    <CardTitle>Metrics Dashboard</CardTitle>
-                    <CardDescription>
-                        Select a date range to filter the metrics data
-                    </CardDescription>
+                <CardHeader className="shadow-xs">
+                    <CardTitle>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-4">
+                            <div className="border-l-4 border-[#2563eb] px-4 py-3 bg-white rounded">
+                                <div className="uppercase text-sm font-semibold mb-1">SNAPSHOTS</div>
+                                <div className="text-2xl font-bold">$56.39</div>
+                            </div>
+                            <div className="border-l-4 border-[#10b981] px-4 py-3 bg-white rounded">
+                                <div className="uppercase text-sm font-semibold mb-1">INGESTOR</div>
+                                <div className="text-2xl font-bold">$25.03</div>
+                            </div>
+                            <div className="border-l-4 border-[#8b5cf6] px-4 py-3 bg-white rounded">
+                                <div className="uppercase text-sm font-semibold mb-1">SCALATOR</div>
+                                <div className="text-2xl font-bold">$7.85</div>
+                            </div>
+                            <div className="border-l-4 border-[#eab308] px-4 py-3 bg-white rounded">
+                                <div className="uppercase text-sm font-semibold mb-1">REPORTER</div>
+                                <div className="text-2xl font-bold">$20.74</div>
+                            </div>
+                            <div className="border-l-4 border-[#ef4444] px-4 py-3 bg-white rounded">
+                                <div className="uppercase text-sm font-semibold mb-1 truncate">EXTERNAL-WORKER-SUP</div>
+                                <div className="text-2xl font-bold">$29.21</div>
+                            </div>
+                        </div>
+                    </CardTitle>
                 </CardHeader>
                 <CardContent>
                     <div className="flex flex-wrap gap-6">
@@ -253,49 +273,49 @@ export default function DateRangePickerWithData() {
                             {/* Shadcn-styled Linear Line Chart */}
                             {/* <Card>
                                 <CardContent className="p-6"> */}
-                                    <div className="h-80">
-                                        <ResponsiveContainer width="100%" height="100%">
-                                            <LineChart
-                                                data={filteredData}
-                                                margin={{
-                                                    top: 5,
-                                                    right: 10,
-                                                    left: 10,
-                                                    bottom: 0,
-                                                }}
-                                            >
-                                                <CartesianGrid vertical={false} stroke="#f0f0f0" />
-                                                <XAxis
-                                                    dataKey="displayDate"
-                                                    stroke="black"
-                                                    fontSize={12}
-                                                    tickLine={false}
-                                                    axisLine={false}
-                                                />
-                                                <YAxis
-                                                    stroke="black"
-                                                    fontSize={12}
-                                                    tickLine={false}
-                                                    axisLine={false}
-                                                    tickFormatter={(value) => `$${value}`}
-                                                />
-                                                <Tooltip content={<CustomTooltip />} />
-                                                {metrics.map(metric => (
-                                                    <Line
-                                                        key={metric}
-                                                        type="linear"
-                                                        dataKey={metric}
-                                                        stroke={metricColors[metric]}
-                                                        strokeWidth={metric === activeMetric ? 4 : 2}
-                                                        dot={metric === activeMetric}
-                                                        activeDot={metric === activeMetric ? 4 : 2}
-                                                        opacity={metric === activeMetric ? 4 : 2}
-                                                    />
-                                                ))}
-                                            </LineChart>
-                                        </ResponsiveContainer>
-                                    </div>
-                                {/* </CardContent>
+                            <div className="h-80">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <LineChart
+                                        data={filteredData}
+                                        margin={{
+                                            top: 5,
+                                            right: 10,
+                                            left: 10,
+                                            bottom: 0,
+                                        }}
+                                    >
+                                        <CartesianGrid vertical={false} stroke="#f0f0f0" />
+                                        <XAxis
+                                            dataKey="displayDate"
+                                            stroke="black"
+                                            fontSize={12}
+                                            tickLine={false}
+                                            axisLine={false}
+                                        />
+                                        <YAxis
+                                            stroke="black"
+                                            fontSize={12}
+                                            tickLine={false}
+                                            axisLine={false}
+                                            tickFormatter={(value) => `$${value}`}
+                                        />
+                                        <Tooltip content={<CustomTooltip />} />
+                                        {metrics.map(metric => (
+                                            <Line
+                                                key={metric}
+                                                type="linear"
+                                                dataKey={metric}
+                                                stroke={metricColors[metric]}
+                                                strokeWidth={metric === activeMetric ? 4 : 2}
+                                                dot={metric === activeMetric}
+                                                activeDot={metric === activeMetric ? 4 : 2}
+                                                opacity={metric === activeMetric ? 4 : 2}
+                                            />
+                                        ))}
+                                    </LineChart>
+                                </ResponsiveContainer>
+                            </div>
+                            {/* </CardContent>
                             </Card> */}
                         </div>
                     </div>
