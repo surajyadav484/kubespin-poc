@@ -1,13 +1,12 @@
-import React from 'react'
-import { DrawerDemo } from './Drawer'
+import Dashboard from './components/Dashboard'
+import Header from './shared-component/Header'
 
 const App = () => {
   return (
     <div>
-      <h1 class="text-3xl font-bold underline text-red-500">
-        Hello world!
-      </h1>
-      <DrawerDemo/>
+      <Header />
+      <div className=' h-10 bg-linear-to-b from-[#DEF3FB] to-[#F4F6F9]' />
+      <Dashboard />
     </div>
   )
 }
