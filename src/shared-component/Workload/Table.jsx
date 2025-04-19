@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import {
     Table,
     TableBody,
@@ -6,14 +6,14 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
 import {
     flexRender,
     getCoreRowModel,
     getSortedRowModel,
     useReactTable,
-} from "@tanstack/react-table"
-import { ArrowUp, ArrowDown, Info, UnfoldHorizontal } from "lucide-react"
+} from "@tanstack/react-table";
+import { ArrowUp, ArrowDown, Info, UnfoldHorizontal, ChevronsRight, RotateCcw, Settings } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
     Tooltip,
@@ -260,161 +260,6 @@ const CostBar = ({ cost, maxCost, rowData }) => {
     );
 };
 
-const ColumnVisibilityDrawer = ({ table }) => {
-    const getColumnDisplay = (column) => {
-        // Special case for select column
-        if (column.id === "select") {
-            return "Select";
-        }
-
-        // Group headers
-        if (column.columnDef.header === "RESOURCES" || column.columnDef.header === "COSTS") {
-            return column.columnDef.header;
-        }
-
-        // Function headers with SortButton
-        if (typeof column.columnDef.header === 'function') {
-            try {
-                const header = column.columnDef.header({ column });
-                if (React.isValidElement(header) && header.props.children) {
-                    if (typeof header.props.children === 'string') {
-                        return header.props.children;
-                    }
-                    // Handle SortButton children
-                    if (Array.isArray(header.props.children)) {
-                        const textChild = header.props.children.find(child =>
-                            typeof child === 'string' ||
-                            (child.props && child.props.children)
-                        );
-                        return textChild?.props?.children || textChild || column.id;
-                    }
-                    return header.props.children;
-                }
-            } catch (e) {
-                console.warn(`Error getting display name for column ${column.id}:`, e);
-            }
-        }
-
-        // Fallback to ID or accessor
-        return column.columnDef.header || column.id;
-    };
-    const mainColumns = table.getAllColumns().filter(column =>
-        !column.parent &&
-        column.getCanHide() &&
-        column.id !== "select"
-    );
-
-    const resourceColumns = table.getAllColumns().filter(column => column.parent?.id === 'RESOURCES');
-    const costColumns = table.getAllColumns().filter(column => column.parent?.id === 'COSTS');
-
-    const toggleParentColumnVisibility = (parentColumn, isVisible) => {
-        parentColumn.toggleVisibility(isVisible);
-        parentColumn.columns.forEach(childColumn => {
-            childColumn.toggleVisibility(isVisible);
-        });
-    };
-
-    return (
-        <Drawer>
-            <DrawerTrigger asChild>
-                <Button variant="outline" size="sm" className="ml-auto h-8 flex gap-2">
-                    <SlidersHorizontal className="h-4 w-4" />
-                    <span>Columns</span>
-                </Button>
-            </DrawerTrigger>
-            <DrawerContent side="right">
-                <DrawerHeader>
-                    <DrawerTitle>Column Visibility</DrawerTitle>
-                    <DrawerDescription>
-                        Toggle columns to show or hide them from the table.
-                    </DrawerDescription>
-                </DrawerHeader>
-                <div className="p-4">
-                    <div className="space-y-6">
-                        {/* Main columns */}
-                        <div className="space-y-3">
-                            <h4 className="font-medium text-sm">Main Columns</h4>
-                            <div className="space-y-3 ml-2">
-                                {mainColumns.map(column => (
-                                    <div key={column.id} className="flex items-center space-x-2">
-                                        <Switch
-                                            id={column.id}
-                                            checked={column.getIsVisible()}
-                                            onCheckedChange={(value) => column.toggleVisibility(!!value)}
-                                        />
-                                        <Label htmlFor={column.id}>
-                                            {getColumnDisplay(column)}
-                                        </Label>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Resource columns */}
-                        <div className="space-y-3">
-                            <h4 className="font-medium text-sm">Resources</h4>
-                            <div className="space-y-3 ml-2">
-                                <div className="flex items-center space-x-2">
-                                    <Switch
-                                        id="resources"
-                                        checked={resourceColumns.every(column => column.getIsVisible())}
-                                        onCheckedChange={(value) => toggleParentColumnVisibility(table.getColumn('RESOURCES'), !!value)}
-                                    />
-                                    <Label htmlFor="resources">RESOURCES</Label>
-                                </div>
-                                {resourceColumns.map(column => (
-                                    <div key={column.id} className="flex items-center space-x-2 ml-4">
-                                        <Switch
-                                            id={column.id}
-                                            checked={column.getIsVisible()}
-                                            onCheckedChange={(value) => column.toggleVisibility(!!value)}
-                                        />
-                                        <Label htmlFor={column.id}>
-                                            {getColumnDisplay(column)}
-                                        </Label>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Cost columns */}
-                        <div className="space-y-3">
-                            <h4 className="font-medium text-sm">Costs</h4>
-                            <div className="space-y-3 ml-2">
-                                <div className="flex items-center space-x-2">
-                                    <Switch
-                                        id="costs"
-                                        checked={costColumns.every(column => column.getIsVisible())}
-                                        onCheckedChange={(value) => toggleParentColumnVisibility(table.getColumn('COSTS'), !!value)}
-                                    />
-                                    <Label htmlFor="costs">COSTS</Label>
-                                </div>
-                                {costColumns.map(column => (
-                                    <div key={column.id} className="flex items-center space-x-2 ml-4">
-                                        <Switch
-                                            id={column.id}
-                                            checked={column.getIsVisible()}
-                                            onCheckedChange={(value) => column.toggleVisibility(!!value)}
-                                        />
-                                        <Label htmlFor={column.id}>
-                                            {getColumnDisplay(column)}
-                                        </Label>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <DrawerFooter>
-                    <DrawerClose asChild>
-                        <Button variant="outline">Close</Button>
-                    </DrawerClose>
-                </DrawerFooter>
-            </DrawerContent>
-        </Drawer>
-    );
-};
-
 function IndeterminateCheckbox({ indeterminate, className = "", ...rest }) {
     const ref = React.useRef(null)
 
@@ -437,7 +282,10 @@ function IndeterminateCheckbox({ indeterminate, className = "", ...rest }) {
 const WorkloadTable = () => {
     const [sorting, setSorting] = useState([])
     const [rowSelection, setRowSelection] = useState({})
-    const [columnVisibility, setColumnVisibility] = useState({})
+    const initialColumnVisibility = {
+        select: true,
+    };
+    const [columnVisibility, setColumnVisibility] = useState(initialColumnVisibility)
 
     const columns = [
         {
@@ -625,7 +473,7 @@ const WorkloadTable = () => {
         state: {
             sorting,
             rowSelection,
-            columnVisibility,
+            columnVisibility
         },
         enableRowSelection: true,
         enableColumnGroups: true,
@@ -635,14 +483,60 @@ const WorkloadTable = () => {
 
     return (
         <div className="w-full">
-            <div className="flex items-center justify-between mb-4">
-                <div className="text-sm font-medium">
-                    {Object.keys(rowSelection).length > 0 ?
-                        `${Object.keys(rowSelection).length}/` : ''
-                    }
-                    {table.getFilteredRowModel().rows.length} Workloads
+
+            <Drawer direction="right" className="shadow-2xs">
+                <div className="flex items-center justify-between mb-2">
+                    <div className="text-sm font-bold text-gray-500">
+                        {Object.keys(rowSelection).length > 0 ?
+                            `${Object.keys(rowSelection).length}/` : ''
+                        }
+                        {table.getFilteredRowModel().rows.length} workloads
+                    </div>
+
+                    <DrawerTrigger asChild>
+                        <div variant="outline" className="flex items-center gap-2 flex-row-reverse">
+                            <Settings size="7%" />
+                        </div>
+                    </DrawerTrigger>
                 </div>
-            </div>
+                <DrawerContent side="right">
+                    <DrawerHeader>
+                        <div className='inline-flex justify-between items-center w-full mb-2'>
+                            <DrawerClose asChild>
+                                <div className="p-1 w-8 h-8 box-border flex items-center justify-center rounded-md border border-transparent hover:border-gray-300 hover:bg-gray-200 cursor-pointer transition">
+                                    <ChevronsRight className="w-5 h-5" />
+                                </div>
+                            </DrawerClose>
+                            <Button
+                                className=" bg-transparent shadow-none text-black p-1 box-border flex items-center justify-center rounded-md border border-transparent hover:border-gray-300 hover:bg-gray-200 cursor-pointer transition"
+                                onClick={() => setColumnVisibility(initialColumnVisibility)}
+                            >
+                                <RotateCcw />
+                                Restore default
+                            </Button>
+                        </div>
+                        <DrawerTitle>Table management</DrawerTitle>
+                    </DrawerHeader>
+
+                    <div className="px-4 py-2 grid gap-4">
+                        {table.getAllLeafColumns()
+                            .filter((column) => column.id !== "select")
+                            .map((column) => (
+                                <div key={column.id} className="flex items-center gap-2">
+                                    <Switch
+                                        id={`toggle-${column.id}`}
+                                        checked={column.getIsVisible()}
+                                        onCheckedChange={() => column.toggleVisibility()}
+                                    />
+                                    <Label htmlFor={`toggle-${column.id}`}>{column.id}</Label>
+                                </div>
+                            ))}
+                    </div>
+
+                </DrawerContent>
+            </Drawer>
+
+
             <div className="rounded-md border">
                 <div className="max-h-[600px] overflow-auto">
                     <div className="min-w-full inline-block align-middle">
