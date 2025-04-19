@@ -1,0 +1,850 @@
+[
+  {
+    "Date": "05/02/2025",
+    "Snapshots": "93",
+    "Ingestor": "71",
+    "Scalator": "57",
+    "Reporter": "36",
+    "ExternalWorkerSupport": "12"
+  },
+  {
+    "Date": "13/03/2025",
+    "Snapshots": "91",
+    "Ingestor": "69",
+    "Scalator": "50",
+    "Reporter": "23",
+    "ExternalWorkerSupport": "1"
+  },
+  {
+    "Date": "04/01/2025",
+    "Snapshots": "81",
+    "Ingestor": "71",
+    "Scalator": "57",
+    "Reporter": "20",
+    "ExternalWorkerSupport": "13"
+  },
+  {
+    "Date": "13/02/2025",
+    "Snapshots": "84",
+    "Ingestor": "68",
+    "Scalator": "54",
+    "Reporter": "40",
+    "ExternalWorkerSupport": "4"
+  },
+  {
+    "Date": "22/01/2025",
+    "Snapshots": "93",
+    "Ingestor": "68",
+    "Scalator": "55",
+    "Reporter": "27",
+    "ExternalWorkerSupport": "0"
+  },
+  {
+    "Date": "08/02/2025",
+    "Snapshots": "96",
+    "Ingestor": "80",
+    "Scalator": "43",
+    "Reporter": "24",
+    "ExternalWorkerSupport": "11"
+  },
+  {
+    "Date": "12/04/2025",
+    "Snapshots": "82",
+    "Ingestor": "72",
+    "Scalator": "57",
+    "Reporter": "31",
+    "ExternalWorkerSupport": "9"
+  },
+  {
+    "Date": "18/03/2025",
+    "Snapshots": "96",
+    "Ingestor": "62",
+    "Scalator": "59",
+    "Reporter": "39",
+    "ExternalWorkerSupport": "5"
+  },
+  {
+    "Date": "01/01/2025",
+    "Snapshots": "100",
+    "Ingestor": "67",
+    "Scalator": "49",
+    "Reporter": "23",
+    "ExternalWorkerSupport": "2"
+  },
+  {
+    "Date": "13/04/2025",
+    "Snapshots": "86",
+    "Ingestor": "71",
+    "Scalator": "58",
+    "Reporter": "29",
+    "ExternalWorkerSupport": "19"
+  },
+  {
+    "Date": "07/01/2025",
+    "Snapshots": "100",
+    "Ingestor": "66",
+    "Scalator": "44",
+    "Reporter": "40",
+    "ExternalWorkerSupport": "7"
+  },
+  {
+    "Date": "02/04/2025",
+    "Snapshots": "95",
+    "Ingestor": "74",
+    "Scalator": "47",
+    "Reporter": "23",
+    "ExternalWorkerSupport": "3"
+  },
+  {
+    "Date": "06/02/2025",
+    "Snapshots": "99",
+    "Ingestor": "77",
+    "Scalator": "49",
+    "Reporter": "25",
+    "ExternalWorkerSupport": "11"
+  },
+  {
+    "Date": "19/01/2025",
+    "Snapshots": "82",
+    "Ingestor": "60",
+    "Scalator": "49",
+    "Reporter": "25",
+    "ExternalWorkerSupport": "14"
+  },
+  {
+    "Date": "18/02/2025",
+    "Snapshots": "100",
+    "Ingestor": "71",
+    "Scalator": "59",
+    "Reporter": "32",
+    "ExternalWorkerSupport": "5"
+  },
+  {
+    "Date": "16/02/2025",
+    "Snapshots": "97",
+    "Ingestor": "60",
+    "Scalator": "53",
+    "Reporter": "24",
+    "ExternalWorkerSupport": "19"
+  },
+  {
+    "Date": "26/03/2025",
+    "Snapshots": "100",
+    "Ingestor": "63",
+    "Scalator": "49",
+    "Reporter": "26",
+    "ExternalWorkerSupport": "16"
+  },
+  {
+    "Date": "03/02/2025",
+    "Snapshots": "99",
+    "Ingestor": "62",
+    "Scalator": "49",
+    "Reporter": "33",
+    "ExternalWorkerSupport": "20"
+  },
+  {
+    "Date": "01/04/2025",
+    "Snapshots": "94",
+    "Ingestor": "66",
+    "Scalator": "54",
+    "Reporter": "27",
+    "ExternalWorkerSupport": "12"
+  },
+  {
+    "Date": "22/02/2025",
+    "Snapshots": "99",
+    "Ingestor": "67",
+    "Scalator": "56",
+    "Reporter": "34",
+    "ExternalWorkerSupport": "9"
+  },
+  {
+    "Date": "17/02/2025",
+    "Snapshots": "83",
+    "Ingestor": "68",
+    "Scalator": "42",
+    "Reporter": "26",
+    "ExternalWorkerSupport": "7"
+  },
+  {
+    "Date": "25/03/2025",
+    "Snapshots": "96",
+    "Ingestor": "77",
+    "Scalator": "55",
+    "Reporter": "30",
+    "ExternalWorkerSupport": "15"
+  },
+  {
+    "Date": "12/01/2025",
+    "Snapshots": "95",
+    "Ingestor": "76",
+    "Scalator": "59",
+    "Reporter": "27",
+    "ExternalWorkerSupport": "0"
+  },
+  {
+    "Date": "15/02/2025",
+    "Snapshots": "81",
+    "Ingestor": "63",
+    "Scalator": "42",
+    "Reporter": "39",
+    "ExternalWorkerSupport": "4"
+  },
+  {
+    "Date": "07/03/2025",
+    "Snapshots": "92",
+    "Ingestor": "62",
+    "Scalator": "48",
+    "Reporter": "27",
+    "ExternalWorkerSupport": "12"
+  },
+  {
+    "Date": "28/02/2025",
+    "Snapshots": "97",
+    "Ingestor": "70",
+    "Scalator": "46",
+    "Reporter": "35",
+    "ExternalWorkerSupport": "9"
+  },
+  {
+    "Date": "06/04/2025",
+    "Snapshots": "94",
+    "Ingestor": "80",
+    "Scalator": "49",
+    "Reporter": "20",
+    "ExternalWorkerSupport": "2"
+  },
+  {
+    "Date": "31/01/2025",
+    "Snapshots": "89",
+    "Ingestor": "79",
+    "Scalator": "53",
+    "Reporter": "39",
+    "ExternalWorkerSupport": "17"
+  },
+  {
+    "Date": "09/03/2025",
+    "Snapshots": "83",
+    "Ingestor": "68",
+    "Scalator": "59",
+    "Reporter": "20",
+    "ExternalWorkerSupport": "12"
+  },
+  {
+    "Date": "13/01/2025",
+    "Snapshots": "100",
+    "Ingestor": "64",
+    "Scalator": "46",
+    "Reporter": "34",
+    "ExternalWorkerSupport": "19"
+  },
+  {
+    "Date": "28/03/2025",
+    "Snapshots": "82",
+    "Ingestor": "79",
+    "Scalator": "45",
+    "Reporter": "31",
+    "ExternalWorkerSupport": "13"
+  },
+  {
+    "Date": "05/01/2025",
+    "Snapshots": "84",
+    "Ingestor": "74",
+    "Scalator": "41",
+    "Reporter": "23",
+    "ExternalWorkerSupport": "6"
+  },
+  {
+    "Date": "22/03/2025",
+    "Snapshots": "87",
+    "Ingestor": "66",
+    "Scalator": "52",
+    "Reporter": "22",
+    "ExternalWorkerSupport": "8"
+  },
+  {
+    "Date": "02/03/2025",
+    "Snapshots": "86",
+    "Ingestor": "69",
+    "Scalator": "44",
+    "Reporter": "27",
+    "ExternalWorkerSupport": "7"
+  },
+  {
+    "Date": "18/01/2025",
+    "Snapshots": "82",
+    "Ingestor": "61",
+    "Scalator": "47",
+    "Reporter": "26",
+    "ExternalWorkerSupport": "20"
+  },
+  {
+    "Date": "14/01/2025",
+    "Snapshots": "92",
+    "Ingestor": "75",
+    "Scalator": "49",
+    "Reporter": "23",
+    "ExternalWorkerSupport": "17"
+  },
+  {
+    "Date": "08/03/2025",
+    "Snapshots": "94",
+    "Ingestor": "61",
+    "Scalator": "41",
+    "Reporter": "21",
+    "ExternalWorkerSupport": "0"
+  },
+  {
+    "Date": "23/03/2025",
+    "Snapshots": "88",
+    "Ingestor": "77",
+    "Scalator": "47",
+    "Reporter": "20",
+    "ExternalWorkerSupport": "4"
+  },
+  {
+    "Date": "06/01/2025",
+    "Snapshots": "92",
+    "Ingestor": "74",
+    "Scalator": "47",
+    "Reporter": "33",
+    "ExternalWorkerSupport": "6"
+  },
+  {
+    "Date": "25/01/2025",
+    "Snapshots": "86",
+    "Ingestor": "64",
+    "Scalator": "50",
+    "Reporter": "21",
+    "ExternalWorkerSupport": "2"
+  },
+  {
+    "Date": "11/01/2025",
+    "Snapshots": "87",
+    "Ingestor": "79",
+    "Scalator": "45",
+    "Reporter": "31",
+    "ExternalWorkerSupport": "10"
+  },
+  {
+    "Date": "14/03/2025",
+    "Snapshots": "95",
+    "Ingestor": "71",
+    "Scalator": "57",
+    "Reporter": "29",
+    "ExternalWorkerSupport": "9"
+  },
+  {
+    "Date": "01/02/2025",
+    "Snapshots": "86",
+    "Ingestor": "74",
+    "Scalator": "41",
+    "Reporter": "26",
+    "ExternalWorkerSupport": "5"
+  },
+  {
+    "Date": "23/01/2025",
+    "Snapshots": "86",
+    "Ingestor": "78",
+    "Scalator": "41",
+    "Reporter": "32",
+    "ExternalWorkerSupport": "15"
+  },
+  {
+    "Date": "07/04/2025",
+    "Snapshots": "100",
+    "Ingestor": "75",
+    "Scalator": "57",
+    "Reporter": "22",
+    "ExternalWorkerSupport": "16"
+  },
+  {
+    "Date": "30/03/2025",
+    "Snapshots": "89",
+    "Ingestor": "71",
+    "Scalator": "54",
+    "Reporter": "24",
+    "ExternalWorkerSupport": "6"
+  },
+  {
+    "Date": "21/02/2025",
+    "Snapshots": "96",
+    "Ingestor": "61",
+    "Scalator": "58",
+    "Reporter": "24",
+    "ExternalWorkerSupport": "12"
+  },
+  {
+    "Date": "20/02/2025",
+    "Snapshots": "83",
+    "Ingestor": "68",
+    "Scalator": "42",
+    "Reporter": "30",
+    "ExternalWorkerSupport": "4"
+  },
+  {
+    "Date": "16/04/2025",
+    "Snapshots": "83",
+    "Ingestor": "72",
+    "Scalator": "56",
+    "Reporter": "34",
+    "ExternalWorkerSupport": "12"
+  },
+  {
+    "Date": "11/04/2025",
+    "Snapshots": "88",
+    "Ingestor": "61",
+    "Scalator": "53",
+    "Reporter": "37",
+    "ExternalWorkerSupport": "2"
+  },
+  {
+    "Date": "08/01/2025",
+    "Snapshots": "87",
+    "Ingestor": "77",
+    "Scalator": "46",
+    "Reporter": "26",
+    "ExternalWorkerSupport": "13"
+  },
+  {
+    "Date": "26/01/2025",
+    "Snapshots": "99",
+    "Ingestor": "77",
+    "Scalator": "48",
+    "Reporter": "32",
+    "ExternalWorkerSupport": "17"
+  },
+  {
+    "Date": "06/03/2025",
+    "Snapshots": "94",
+    "Ingestor": "76",
+    "Scalator": "53",
+    "Reporter": "23",
+    "ExternalWorkerSupport": "5"
+  },
+  {
+    "Date": "01/03/2025",
+    "Snapshots": "96",
+    "Ingestor": "78",
+    "Scalator": "43",
+    "Reporter": "39",
+    "ExternalWorkerSupport": "10"
+  },
+  {
+    "Date": "21/01/2025",
+    "Snapshots": "95",
+    "Ingestor": "72",
+    "Scalator": "59",
+    "Reporter": "27",
+    "ExternalWorkerSupport": "17"
+  },
+  {
+    "Date": "04/03/2025",
+    "Snapshots": "100",
+    "Ingestor": "78",
+    "Scalator": "41",
+    "Reporter": "32",
+    "ExternalWorkerSupport": "9"
+  },
+  {
+    "Date": "09/01/2025",
+    "Snapshots": "87",
+    "Ingestor": "68",
+    "Scalator": "52",
+    "Reporter": "36",
+    "ExternalWorkerSupport": "11"
+  },
+  {
+    "Date": "24/02/2025",
+    "Snapshots": "95",
+    "Ingestor": "69",
+    "Scalator": "59",
+    "Reporter": "34",
+    "ExternalWorkerSupport": "18"
+  },
+  {
+    "Date": "10/01/2025",
+    "Snapshots": "86",
+    "Ingestor": "60",
+    "Scalator": "58",
+    "Reporter": "32",
+    "ExternalWorkerSupport": "14"
+  },
+  {
+    "Date": "11/02/2025",
+    "Snapshots": "82",
+    "Ingestor": "78",
+    "Scalator": "60",
+    "Reporter": "21",
+    "ExternalWorkerSupport": "4"
+  },
+  {
+    "Date": "23/02/2025",
+    "Snapshots": "80",
+    "Ingestor": "69",
+    "Scalator": "53",
+    "Reporter": "22",
+    "ExternalWorkerSupport": "15"
+  },
+  {
+    "Date": "28/01/2025",
+    "Snapshots": "99",
+    "Ingestor": "64",
+    "Scalator": "55",
+    "Reporter": "40",
+    "ExternalWorkerSupport": "1"
+  },
+  {
+    "Date": "27/01/2025",
+    "Snapshots": "93",
+    "Ingestor": "68",
+    "Scalator": "46",
+    "Reporter": "24",
+    "ExternalWorkerSupport": "8"
+  },
+  {
+    "Date": "19/02/2025",
+    "Snapshots": "92",
+    "Ingestor": "68",
+    "Scalator": "59",
+    "Reporter": "26",
+    "ExternalWorkerSupport": "2"
+  },
+  {
+    "Date": "05/04/2025",
+    "Snapshots": "85",
+    "Ingestor": "61",
+    "Scalator": "47",
+    "Reporter": "29",
+    "ExternalWorkerSupport": "14"
+  },
+  {
+    "Date": "09/04/2025",
+    "Snapshots": "82",
+    "Ingestor": "65",
+    "Scalator": "51",
+    "Reporter": "29",
+    "ExternalWorkerSupport": "8"
+  },
+  {
+    "Date": "27/03/2025",
+    "Snapshots": "95",
+    "Ingestor": "74",
+    "Scalator": "59",
+    "Reporter": "34",
+    "ExternalWorkerSupport": "1"
+  },
+  {
+    "Date": "29/01/2025",
+    "Snapshots": "95",
+    "Ingestor": "70",
+    "Scalator": "41",
+    "Reporter": "22",
+    "ExternalWorkerSupport": "9"
+  },
+  {
+    "Date": "10/04/2025",
+    "Snapshots": "85",
+    "Ingestor": "66",
+    "Scalator": "50",
+    "Reporter": "29",
+    "ExternalWorkerSupport": "5"
+  },
+  {
+    "Date": "04/04/2025",
+    "Snapshots": "89",
+    "Ingestor": "72",
+    "Scalator": "45",
+    "Reporter": "21",
+    "ExternalWorkerSupport": "6"
+  },
+  {
+    "Date": "15/01/2025",
+    "Snapshots": "99",
+    "Ingestor": "60",
+    "Scalator": "41",
+    "Reporter": "20",
+    "ExternalWorkerSupport": "10"
+  },
+  {
+    "Date": "29/03/2025",
+    "Snapshots": "81",
+    "Ingestor": "64",
+    "Scalator": "48",
+    "Reporter": "39",
+    "ExternalWorkerSupport": "0"
+  },
+  {
+    "Date": "16/03/2025",
+    "Snapshots": "97",
+    "Ingestor": "71",
+    "Scalator": "56",
+    "Reporter": "37",
+    "ExternalWorkerSupport": "8"
+  },
+  {
+    "Date": "30/01/2025",
+    "Snapshots": "90",
+    "Ingestor": "64",
+    "Scalator": "41",
+    "Reporter": "38",
+    "ExternalWorkerSupport": "14"
+  },
+  {
+    "Date": "26/02/2025",
+    "Snapshots": "99",
+    "Ingestor": "60",
+    "Scalator": "57",
+    "Reporter": "27",
+    "ExternalWorkerSupport": "15"
+  },
+  {
+    "Date": "11/03/2025",
+    "Snapshots": "94",
+    "Ingestor": "69",
+    "Scalator": "45",
+    "Reporter": "36",
+    "ExternalWorkerSupport": "12"
+  },
+  {
+    "Date": "17/03/2025",
+    "Snapshots": "99",
+    "Ingestor": "76",
+    "Scalator": "40",
+    "Reporter": "28",
+    "ExternalWorkerSupport": "17"
+  },
+  {
+    "Date": "20/01/2025",
+    "Snapshots": "85",
+    "Ingestor": "63",
+    "Scalator": "50",
+    "Reporter": "39",
+    "ExternalWorkerSupport": "13"
+  },
+  {
+    "Date": "03/04/2025",
+    "Snapshots": "88",
+    "Ingestor": "79",
+    "Scalator": "46",
+    "Reporter": "33",
+    "ExternalWorkerSupport": "3"
+  },
+  {
+    "Date": "15/03/2025",
+    "Snapshots": "86",
+    "Ingestor": "62",
+    "Scalator": "45",
+    "Reporter": "25",
+    "ExternalWorkerSupport": "19"
+  },
+  {
+    "Date": "02/01/2025",
+    "Snapshots": "94",
+    "Ingestor": "69",
+    "Scalator": "56",
+    "Reporter": "38",
+    "ExternalWorkerSupport": "5"
+  },
+  {
+    "Date": "27/02/2025",
+    "Snapshots": "82",
+    "Ingestor": "79",
+    "Scalator": "60",
+    "Reporter": "28",
+    "ExternalWorkerSupport": "1"
+  },
+  {
+    "Date": "08/04/2025",
+    "Snapshots": "90",
+    "Ingestor": "80",
+    "Scalator": "47",
+    "Reporter": "30",
+    "ExternalWorkerSupport": "15"
+  },
+  {
+    "Date": "25/02/2025",
+    "Snapshots": "80",
+    "Ingestor": "72",
+    "Scalator": "51",
+    "Reporter": "24",
+    "ExternalWorkerSupport": "10"
+  },
+  {
+    "Date": "05/03/2025",
+    "Snapshots": "97",
+    "Ingestor": "71",
+    "Scalator": "48",
+    "Reporter": "36",
+    "ExternalWorkerSupport": "3"
+  },
+  {
+    "Date": "24/03/2025",
+    "Snapshots": "81",
+    "Ingestor": "65",
+    "Scalator": "46",
+    "Reporter": "26",
+    "ExternalWorkerSupport": "9"
+  },
+  {
+    "Date": "03/03/2025",
+    "Snapshots": "92",
+    "Ingestor": "75",
+    "Scalator": "43",
+    "Reporter": "21",
+    "ExternalWorkerSupport": "3"
+  },
+  {
+    "Date": "03/01/2025",
+    "Snapshots": "99",
+    "Ingestor": "66",
+    "Scalator": "47",
+    "Reporter": "39",
+    "ExternalWorkerSupport": "9"
+  },
+  {
+    "Date": "24/01/2025",
+    "Snapshots": "89",
+    "Ingestor": "70",
+    "Scalator": "59",
+    "Reporter": "40",
+    "ExternalWorkerSupport": "6"
+  },
+  {
+    "Date": "04/02/2025",
+    "Snapshots": "96",
+    "Ingestor": "64",
+    "Scalator": "60",
+    "Reporter": "37",
+    "ExternalWorkerSupport": "16"
+  },
+  {
+    "Date": "17/01/2025",
+    "Snapshots": "100",
+    "Ingestor": "62",
+    "Scalator": "49",
+    "Reporter": "27",
+    "ExternalWorkerSupport": "13"
+  },
+  {
+    "Date": "09/02/2025",
+    "Snapshots": "100",
+    "Ingestor": "75",
+    "Scalator": "42",
+    "Reporter": "29",
+    "ExternalWorkerSupport": "11"
+  },
+  {
+    "Date": "16/01/2025",
+    "Snapshots": "95",
+    "Ingestor": "78",
+    "Scalator": "47",
+    "Reporter": "22",
+    "ExternalWorkerSupport": "1"
+  },
+  {
+    "Date": "21/03/2025",
+    "Snapshots": "84",
+    "Ingestor": "78",
+    "Scalator": "59",
+    "Reporter": "28",
+    "ExternalWorkerSupport": "3"
+  },
+  {
+    "Date": "12/03/2025",
+    "Snapshots": "88",
+    "Ingestor": "76",
+    "Scalator": "47",
+    "Reporter": "32",
+    "ExternalWorkerSupport": "3"
+  },
+  {
+    "Date": "19/03/2025",
+    "Snapshots": "83",
+    "Ingestor": "69",
+    "Scalator": "56",
+    "Reporter": "33",
+    "ExternalWorkerSupport": "18"
+  },
+  {
+    "Date": "15/04/2025",
+    "Snapshots": "91",
+    "Ingestor": "73",
+    "Scalator": "41",
+    "Reporter": "21",
+    "ExternalWorkerSupport": "20"
+  },
+  {
+    "Date": "20/03/2025",
+    "Snapshots": "87",
+    "Ingestor": "67",
+    "Scalator": "42",
+    "Reporter": "26",
+    "ExternalWorkerSupport": "16"
+  },
+  {
+    "Date": "14/04/2025",
+    "Snapshots": "87",
+    "Ingestor": "68",
+    "Scalator": "47",
+    "Reporter": "26",
+    "ExternalWorkerSupport": "11"
+  },
+  {
+    "Date": "10/02/2025",
+    "Snapshots": "86",
+    "Ingestor": "76",
+    "Scalator": "54",
+    "Reporter": "30",
+    "ExternalWorkerSupport": "6"
+  },
+  {
+    "Date": "07/02/2025",
+    "Snapshots": "81",
+    "Ingestor": "75",
+    "Scalator": "48",
+    "Reporter": "21",
+    "ExternalWorkerSupport": "6"
+  },
+  {
+    "Date": "10/03/2025",
+    "Snapshots": "95",
+    "Ingestor": "68",
+    "Scalator": "44",
+    "Reporter": "20",
+    "ExternalWorkerSupport": "14"
+  },
+  {
+    "Date": "14/02/2025",
+    "Snapshots": "99",
+    "Ingestor": "73",
+    "Scalator": "45",
+    "Reporter": "27",
+    "ExternalWorkerSupport": "4"
+  },
+  {
+    "Date": "02/02/2025",
+    "Snapshots": "92",
+    "Ingestor": "61",
+    "Scalator": "47",
+    "Reporter": "22",
+    "ExternalWorkerSupport": "12"
+  },
+  {
+    "Date": "12/02/2025",
+    "Snapshots": "95",
+    "Ingestor": "68",
+    "Scalator": "49",
+    "Reporter": "27",
+    "ExternalWorkerSupport": "11"
+  },
+  {
+    "Date": "31/03/2025",
+    "Snapshots": "96",
+    "Ingestor": "71",
+    "Scalator": "41",
+    "Reporter": "31",
+    "ExternalWorkerSupport": "12"
+  }
+]
