@@ -18,11 +18,12 @@ import CPUPieChart from "./CPUPieChart";
 import StoragePieChart from "./StoragePieChart";
 import CPUMemoryAreaChart from "./CPUMemoryAreaChart";
 import ViewUnsubscribed from "./ViewUnsubscribed";
+import HeaderTile from "./HeaderTile";
 
 const Dashboard = () => {
   return (
-    <div className="mx-20">
-      <div className="flex items-center gap-5">
+    <div>
+      {/* <div className="flex items-center gap-5">
         <Badge className="bg-[#BCF7FF] text-[#004F5A] font-medium">Demo</Badge>
         <p className="text-[#0D7381] text-xs font-semibold">
           Get free cost monitoring, security and optimization insights for K8s
@@ -30,17 +31,9 @@ const Dashboard = () => {
         <Button className="ml-auto text-xs font-semibold py-0 px-2.5">
           Connect Cluster
         </Button>
-      </div>
-      <div className="text-[#051922] text-[28px] font-semibold mt-10">
-        <span>Dashboard</span>
-        <sup className="ml-0.5">
-          <span class="relative inline-flex size-4">
-            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#69BBD5]"></span>
-            <span class="relative inline-flex size-4 rounded-full bg-[#69BBD5]"></span>
-          </span>
-          {/* <span class="inline-flex h-5 w-5 animate-ping rounded-full bg-sky-400 opacity-75"></span> */}
-        </sup>
-      </div>
+      </div> */}
+      <HeaderTile title='Dashboard' showBlinkIcon subText="Get free cost monitoring, security and optimization insights for K8s" />
+      
       <div className="mt-5 flex gap-x-5">
         {/* Cluster details */}
         <div>

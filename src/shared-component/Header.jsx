@@ -1,15 +1,15 @@
-import React from 'react';
+import { NavLink } from 'react-router';
 
 const headerItems = [
     {
-    titile:'Referral Program',
+    titile:'Dashboard',
     icon:'',
-    link:'/referral-program'
+    link:'/dashboard'
 },
 {
-    titile:'Documentation',
+    titile:'Workload',
     icon:'',
-    link:'/documentation'
+    link:'/workload'
 },
 {
     titile:'Help',
@@ -22,9 +22,9 @@ const Header = () => {
   return (
     <div className='h-12 shadow flex justify-center items-center gap-5 text-sm font-medium text-[#40545D]'>
       {headerItems.map((item, index) => (
-        <a key={index} href={item.link} className="header-item">
+        <NavLink key={index} to={item.link} className={({isActive}) => isActive ? "px-3 py-1 bg-blue-300 rounded":"px-3 py-1 hover:bg-gray-200 rounded"}>
           {item.titile}
-          </a>
+          </NavLink>
       ))}
     </div>
   );

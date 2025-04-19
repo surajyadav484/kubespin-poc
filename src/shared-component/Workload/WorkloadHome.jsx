@@ -1,14 +1,16 @@
 import React from 'react'
 import WorkloadTable from './Table'
 import WorkloadGraph from './WorkloadGraph'
+import HeaderTile from '@/components/HeaderTile'
 
 const Workload = () => {
   return (
     <>
-      <div>
+      {/* <div>
         <h1 className='bg-red-700 text-[28px] font-bold'>Workloads</h1>
-      </div>
-      <div>
+      </div> */}
+      <HeaderTile title='Workloads' subText="Get free cost monitoring, security and optimization insights for K8s" />
+      <div className="mt-5">
         <WorkloadGraph/>
       </div>
       <WorkloadTable />
