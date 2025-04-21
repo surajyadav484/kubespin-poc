@@ -53,7 +53,8 @@ const Dashboard = () => {
               <TableRow className="border-b-0">
                 <TableCell>K8S provider:</TableCell>
                 <TableCell className="text-right">
-                  <IceCream />
+                  {/* <IceCream /> */}
+                  <img src="/kubernetes.png" className="w-5 h-5 ml-auto" />
                 </TableCell>
               </TableRow>
               <TableRow className="border-b-0">
@@ -82,7 +83,7 @@ const Dashboard = () => {
 
         <div className="w-full">
           <p className="text-[#5D6E75] text-xs font-semibold">Nodes</p>
-          <div className="px-3 py-2  bg-white mt-2 rounded-md">
+          <div className="px-3 py-2  bg-white mt-2 rounded-md" id="nodes">
             <div>
               <Table className="mt-2 w-full bg-white shadow-md border-none">
                 <TableBody>
@@ -193,7 +194,7 @@ const Dashboard = () => {
         <h3>CAST AI AUTOSCALER POLICIES</h3>
         <h3>0/3</h3>
       </div>
-      <div className="flex w-full justify-between my-5 flex-1 gap-x-10">
+      <div className="flex w-full justify-between my-5 flex-1 gap-x-10"id="resource-usage">
         <div className="flex-1">
           <p className="text-[#5D6E75] text-xs font-semibold mb-2">CPU</p>
           <CPUPieChart />
@@ -207,7 +208,7 @@ const Dashboard = () => {
           <StoragePieChart />
         </div>
       </div>
-      <div className="mb-10">
+      <div className="mb-10" id="resource-usage-in-graphs">
         <CPUMemoryAreaChart />
       </div>
     </div>
