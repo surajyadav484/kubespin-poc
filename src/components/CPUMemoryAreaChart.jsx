@@ -95,7 +95,7 @@ const CPUMemoryAreaChart = () => {
             value={selectedDuration}
             onValueChange={(value) => setSelectedDuration(value)}
           >
-            <TabsList className="grid grid-cols-12 gap-2 w-full  border-b border-b-gray-400">
+            <TabsList className="grid grid-cols-12 gap-2 w-full  ">
               <TabsTrigger value="1hrs">1 Hour</TabsTrigger>
               <TabsTrigger value="24hrs">24 Hour</TabsTrigger>
               <TabsTrigger value="7days">7 Days</TabsTrigger>
@@ -104,7 +104,7 @@ const CPUMemoryAreaChart = () => {
             <TabsContent value="account"></TabsContent>
             <TabsContent value="password"></TabsContent>
           </Tabs>
-          <hr />
+          <hr className="text-gray-500" />
         </div>
         <div className="w-[35%]">
           <div className="flex items-center justify-center gap-x-2">
