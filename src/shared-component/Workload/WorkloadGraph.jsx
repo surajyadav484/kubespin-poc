@@ -148,8 +148,8 @@ export default function DateRangePickerWithData() {
     "ExternalWorkerSupport",
   ];
   const metricColors = {
-    Snapshots: "#2563eb",
-    Ingestor: "#00CFFF",
+    Snapshots: "#7F00FF",
+    Ingestor: "#73e3fc",
     Scalator: "#D3C6FF",
     Reporter: "#FFD580",
     ExternalWorkerSupport: "#8FF0B2",
@@ -207,23 +207,23 @@ export default function DateRangePickerWithData() {
         <CardHeader className="shadow-xs">
           <CardTitle>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-4">
-              <div className="border-l-4 border-[#2563eb] px-4 py-3 bg-white rounded">
+              <div className="border-l-3 border-[#7F00FF] px-3 py-3 bg-white rounded">
                 <div className="text-sm font-light mb-1">Snapshots</div>
                 <div className="text-[20px] font-semibold">$56.39</div>
               </div>
-              <div className="border-l-4 border-[#10b981] px-4 py-3 bg-white rounded">
+              <div className="border-l-3 border-[#73e3fc] px-3 py-3 bg-white rounded">
                 <div className="text-sm font-light mb-1">Ingestor</div>
                 <div className="text-[20px] font-semibold">$25.03</div>
               </div>
-              <div className="border-l-4 border-[#8b5cf6] px-4 py-3 bg-white rounded">
+              <div className="border-l-3 border-[#D3C6FF] px-3 py-3 bg-white rounded">
                 <div className="text-sm font-light mb-1">Scalator</div>
                 <div className="text-[20px] font-semibold">$7.85</div>
               </div>
-              <div className="border-l-4 border-[#eab308] px-4 py-3 bg-white rounded">
+              <div className="border-l-3 border-[#FFD580] px-3 py-3 bg-white rounded">
                 <div className="text-sm font-light mb-1">Reporter</div>
                 <div className="text-[20px] font-semibold">$20.74</div>
               </div>
-              <div className="border-l-4 border-[#ef4444] px-4 py-3 bg-white rounded">
+              <div className="border-l-3 border-[#8FF0B2] px-3 py-3 bg-white rounded">
                 <div className="text-sm font-light mb-1 truncate">
                   External Worker Sup
                 </div>
